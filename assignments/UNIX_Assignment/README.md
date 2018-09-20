@@ -3,7 +3,7 @@
 
 ## Step 1 - Data Inspection
 
-###1.1 File name `fang_et_al_genotypes.txt `
+### 1.1 File name `fang_et_al_genotypes.txt `
 
 * File Size:  `$ du -h fang_et_al_genotypes.txt` ; **11M**
 * Number of Columns: `$ awk -F "\t" '{print NF; exit}' fang_et_al_genotypes.txt` ; **986**
@@ -11,7 +11,7 @@
 * ASCII: `$ file fang_et_al_genotypes.txt
 ` ; **fang_et_al_genotypes.txt: ASCII text, with very long lines**
 
-###1.2 File name ` snp_position.txt`
+### 1.2 File name ` snp_position.txt`
 
 * File Size: `$ du -h snp_position.txt
 ` ; **84K**
@@ -30,7 +30,7 @@
 * Teosinte: `$ grep -E "(ZMPBA|ZMPIL|ZMPJA)" fang_et_al_genotypes.txt > teosinte_genotypes.txt
 `
 
-###2.2 Extract the header from the genotype file and add to the extracted files
+### 2.2 Extract the header from the genotype file and add to the extracted files
 
 `$ grep "Group" fang_et_al_genotypes.txt > header.txt`
 
@@ -54,7 +54,7 @@
 
 `$ grep -v "^#" snp_position.txt | cut -f 1,3,4 > snp_position_cut.txt`
 
-###2.6 Remove headers from the files
+### 2.6 Remove headers from the files
 
 `$ grep -v "Group" transposed_maize.txt > maize_no_header.txt`
 
@@ -76,19 +76,19 @@
 
 `$ join -t $'\t' -1 1 -2 1 snp_sorted.txt teosinte_sorted.txt > teosinte_joined.txt`
 
-###2.9 Sort files by chromosome number
+### 2.9 Sort files by chromosome number
 
 `$  sort -k2,2n maize_joined.txt > maize_sorted_by_chr.txt`
 
 `$ sort -k2,2n teosinte_joined.txt > teosinte_sorted_by_chr.txt`
 
-###2.10 Substitute missing data "?" with "-"
+### 2.10 Substitute missing data "?" with "-"
 
 `$  sed 's/?/-/g' maize_sorted_by_chr.txt > maize_dash.txt`
 
 `$ sed 's/?/-/g' teosinte_sorted_by_chr.txt > teosinte_dash.txt`
 
-###2.11 Create separate files for each chromosome
+### 2.11 Create separate files for each chromosome
 
 `$ for i in {1..10}; do awk '$2=='$i'' maize_sorted_by_chr.txt > maize_chr"$i"_questionmark.txt; done`
 
@@ -98,7 +98,7 @@
 
 `$ for i in {1..10}; do awk '$2=='$i'' teosinte_dash.txt > teosinte_chr"$i"_dash.txt; done`
 
-###2.12 Sort files SNPs ordered based on increasing position values and with missing data encoded by "?"
+### 2.12 Sort files SNPs ordered based on increasing position values and with missing data encoded by "?"
 
 `$ for i in {1..10}; do sort -k3,3n maize_chr"$i"_questionmark.txt > maize_chr"$i"_questmark_ordered.txt; done`
 
@@ -110,19 +110,19 @@
 
 `$  for i in {1..10}; do sort -k3,3nr teosinte_chr"$i"_dash.txt > teosinte_chr"$i"_dash_ordered.txt; done`
 
-###2.14 Create a file with all SNPs with unknow position in the genome
+### 2.14 Create a file with all SNPs with unknow position in the genome
 
 `$ grep "unknown" maize_sorted_by_chr.txt > maize_unknown.txt`
 
 `$ grep "unknown" teosinte_sorted_by_chr.txt > teosinte_unknown.txt`
 
-###2.15 Create a file with all SNPs with multiple position in the genome
+### 2.15 Create a file with all SNPs with multiple position in the genome
 
 `$ grep "multiple" maize_sorted_by_chr.txt > maize_multiple.txt`
 
 `$ grep "multiple" teosinte_sorted_by_chr.txt > teosinte_multiple.txt`
 
-###2.16 Adding files to folders
+### 2.16 Adding files to folders
 
 `$ mkdir Results Results/Maize_Questionmark Results/Teosinte_Questionmark Results/Maize_Dash Results/Teosinte_Dash Results/MaizeandTeosinte_UnknownPositions Results/MaizeandTeosinte_MultiplePositions/ Intermediate_files`
 
